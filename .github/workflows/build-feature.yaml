@@ -20,22 +20,20 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
       
-      # Ensure correct working directory
-      - name: Change to project directory
-        run: cd customer-back
-      
       # Grant execute permissions to Maven wrapper
       - name: Grant execute permissions to Maven wrapper
         run: chmod +x mvnw
       
       # Build with Maven
       - name: Build with Maven
+        working-directory: ./customer-back
         run: |
           ./mvnw clean install
           echo "Build with Maven completed"
       
       # Run tests
       - name: Run tests
+        working-directory: ./customer-back
         run: |
           ./mvnw test
           echo "Tests completed"
