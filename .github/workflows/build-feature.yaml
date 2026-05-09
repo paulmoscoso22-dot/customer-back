@@ -1,9 +1,8 @@
 name: Build and Test Feature Branch
 on:
-  pull_request:
+  push:
     branches:
-      - develop
-    types: [opened, reopened]
+      - feature/*
 
 jobs:
   build-feature:
@@ -13,44 +12,31 @@ jobs:
       # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          
-      - name: pull checkout from repository
-        run: echo "Pulling latest changes from repository"   
-
-      # Set up Java environment
       
-      
+      # Set up Java
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu' # Correct distribution
-          java-version: '17'   # Correct Java version
-
-
-      - name: cache Maven dependencies
-        uses: actions/cache@v3
-        with:   
-            path: ~/.m2/repository
-            key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-            restore-keys: |
-                ${{ runner.os }}-maven-
-
-
+          distribution: 'zulu'
+          java-version: '17'
+      
+      # Grant execute permissions to Maven wrapper
+      - name: Grant execute permissions to Maven wrapper
+        run: chmod +x mvnw
+      
       # Build with Maven
       - name: Build with Maven
+        working-directory: ./customer-back
         run: |
-            mvn clean test package
-            echo "Build with Maven completed"
-        #   ./mvnw clean install
-        #   echo "Build with Maven completed"
-
+          ./mvnw clean install
+          echo "Build with Maven completed"
+      
       # Run tests
-    #   - name: Run tests
-    #     run: |
-    #       ./mvnw test
-    #       echo "Tests completed"
+      - name: Run tests
+        working-directory: ./customer-back
+        run: |
+          ./mvnw test
+          echo "Tests completed"
 
 
 
