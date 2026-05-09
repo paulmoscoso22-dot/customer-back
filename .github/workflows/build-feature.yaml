@@ -36,6 +36,7 @@ jobs:
         run: |
           mvn clean test package
           echo "build with maven"
+          
 
 #######################################################
 # Automatic merge to develop branch
