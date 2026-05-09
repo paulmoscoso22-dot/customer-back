@@ -35,5 +35,12 @@ jobs:
         working-directory: .
         shell: bash
         run: |
-          chmod +x mvnw || true
-          ./mvnw clean test package
+          if [ -f mvnw ]; then
+            chmod +x mvnw
+            ./mvnw clean test package
+          elif command -v mvn >/dev/null 2>&1; then
+            mvn clean test package
+          else
+            echo "Neither mvnw nor mvn found. Install Maven or add mvnw to the repo."
+            exit 1
+          fi
