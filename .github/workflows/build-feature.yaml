@@ -1,28 +1,28 @@
-name: Build and Test Feature Branch
+# name: Build and Test Feature Branch
 
-on:
-  pull_request:
-    branches:
-      - feature/*
+# on:
+#   pull_request:
+#     branches:
+#       - feature/*
 
-jobs:
-  build-feature:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-feature:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up JDK 17 and cache dependencies
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-          cache: 'maven'
-          cache-dependency-path: '**/pom.xml'
+#       - name: Set up JDK 17 and cache dependencies
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'zulu'
+#           java-version: '17'
+#           cache: 'maven'
+#           cache-dependency-path: '**/pom.xml'
 
-      - name: Build and run unit tests
-        run: mvn -B clean test
+#       - name: Build and run unit tests
+#         run: mvn -B clean test
 
 
 
