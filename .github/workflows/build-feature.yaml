@@ -34,10 +34,25 @@ jobs:
 
       - name: build with maven
         run: |
-          mvn clean test package
+          echo "Working dir: $(pwd)"
+          if [ -f pom.xml ]; then
+            echo "Found pom.xml in current directory"
+            mvn clean test package
+          else
+            echo "pom.xml not in current directory, searching..."
+            POM_PATH=$(find . -maxdepth 5 -name pom.xml -print -quit)
+            if [ -n "$POM_PATH" ]; then
+              POM_DIR=$(dirname "$POM_PATH")
+              echo "Found pom.xml at $POM_PATH, running mvn there"
+              mvn -f "$POM_DIR/pom.xml" clean test package
+            else
+              echo "No pom.xml found in repository"
+              ls -la
+              exit 1
+            fi
+          fi
           echo "build with maven"
 
 
 
-    
-      
+
