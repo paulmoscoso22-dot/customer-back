@@ -1,40 +1,43 @@
-name: Build and Test Feature Branch
-
+name: build and test feature branch
 on:
   pull_request:
-    branches:
-      - feature/*
-    types:
-      - opened
-      - reopened
-      
-jobs:
+    branches: [ develop ]
+    types: [ opened, reopened ]
+jobs: 
   build-feature:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      #############################################################
+      # 2- dowload code from feature branch , setup java 8 and check that source code is buildable
+      ########################################################
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          
+      - name: pull and checkout from git repository
+        run: |
+           echo "pulling and checking out from git repository"
 
-      - name: Set up Java 17 with Maven cache
+      - name: setup java 17 
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
-        
+
       - name: Cache Maven dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven- 
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Build and Test
-        run: mvn clean test package 
-         echo "Build and tests completed successfully."
-
-
-
-
+      - name: build with maven
+        run: |
+          mvn clean test package
+          echo "build with maven"
 
 
+
+    
+      
