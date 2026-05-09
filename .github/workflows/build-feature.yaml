@@ -54,3 +54,4 @@ jobs:
             echo "Maven non trovato."
             exit 1
             fi
+            
