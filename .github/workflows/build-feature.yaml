@@ -70,3 +70,13 @@ jobs:
           repository: ${{ github.repository }}
           event-type: publish-artifact-event
           client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
+
+      - name: Debug send repository_dispatch (curl)
+        if: success()
+        run: |
+          echo "Sending repository_dispatch via API for debug"
+          curl -i -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"publish-artifact-event","client_payload":{"base_branch":"'"${{ github.base_ref }}"'"}}' || true
