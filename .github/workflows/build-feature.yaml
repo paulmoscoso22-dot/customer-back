@@ -9,11 +9,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Pull and checkout from git repository
-        run: echo "pulling and checking out from git repository"
+      - name: Debug file presenti
+        run: ls -la
 
       - name: Debug struttura directory
         run: find . -name "pom.xml" -maxdepth 4
@@ -35,15 +33,21 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Build with Maven
-        working-directory: .
         shell: bash
         run: |
+          POM_DIR=$(find . -name "pom.xml" -maxdepth 4 | head -1 | xargs dirname)
+          if [ -z "$POM_DIR" ]; then
+            echo "ERRORE: pom.xml non trovato!"
+            exit 1
+          fi
+          echo "Found pom.xml in: $POM_DIR"
+          cd "$POM_DIR"
           if [ -f mvnw ]; then
             chmod +x mvnw
             ./mvnw clean test package
           elif command -v mvn >/dev/null 2>&1; then
             mvn clean test package
           else
-            echo "Neither mvnw nor mvn found. Install Maven or add mvnw to the repo."
+            echo "Maven non trovato."
             exit 1
           fi
