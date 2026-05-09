@@ -21,6 +21,10 @@ jobs:
           distribution: 'zulu' # Correct distribution
           java-version: '17'   # Correct Java version
 
+      # Grant execute permissions to Maven wrapper
+      - name: Grant execute permissions to Maven wrapper
+        run: chmod +x mvnw
+
       # Build with Maven
       - name: Build with Maven
         run: |
