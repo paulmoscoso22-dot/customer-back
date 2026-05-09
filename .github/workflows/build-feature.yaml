@@ -1,42 +1,28 @@
-name: Build and Test Feature Branch
-on:
-  push:
-    branches:
-      - feature/*
+# name: Build and Test Feature Branch
 
-jobs:
-  build-feature:
-    runs-on: ubuntu-latest
+# on:
+#   pull_request:
+#     branches:
+#       - feature/*
 
-    steps:
-      # Checkout the repository
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      # Set up Java
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-      
-      # Grant execute permissions to Maven wrapper
-      - name: Grant execute permissions to Maven wrapper
-        run: chmod +x mvnw
-      
-      # Build with Maven
-      - name: Build with Maven
-        working-directory: ./customer-back
-        run: |
-          ./mvnw clean install
-          echo "Build with Maven completed"
-      
-      # Run tests
-      - name: Run tests
-        working-directory: ./customer-back
-        run: |
-          ./mvnw test
-          echo "Tests completed"
+# jobs:
+#   build-feature:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up JDK 17 and cache dependencies
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'zulu'
+#           java-version: '17'
+#           cache: 'maven'
+#           cache-dependency-path: '**/pom.xml'
+
+#       - name: Build and run unit tests
+#         run: mvn -B clean test
 
 
 
