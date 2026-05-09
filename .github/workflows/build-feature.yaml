@@ -35,19 +35,22 @@ jobs:
       - name: Build with Maven
         shell: bash
         run: |
-          POM_DIR=$(find . -name "pom.xml" -maxdepth 4 | head -1 | xargs dirname)
-          if [ -z "$POM_DIR" ]; then
+            POM_PATH=$(find . -name "pom.xml" -maxdepth 4 | head -1)
+            if [ -z "$POM_PATH" ]; then
             echo "ERRORE: pom.xml non trovato!"
+            echo "File presenti:"
+            ls -la
             exit 1
-          fi
-          echo "Found pom.xml in: $POM_DIR"
-          cd "$POM_DIR"
-          if [ -f mvnw ]; then
+            fi
+            POM_DIR=$(dirname "$POM_PATH")
+            echo "Found pom.xml in: $POM_DIR"
+            cd "$POM_DIR"
+            if [ -f mvnw ]; then
             chmod +x mvnw
             ./mvnw clean test package
-          elif command -v mvn >/dev/null 2>&1; then
+            elif command -v mvn >/dev/null 2>&1; then
             mvn clean test package
-          else
+            else
             echo "Maven non trovato."
             exit 1
-          fi
+            fi
