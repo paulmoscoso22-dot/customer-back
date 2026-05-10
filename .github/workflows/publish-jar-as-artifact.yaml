@@ -59,8 +59,7 @@ jobs:
            mvn clean test package -DskipTests=true --batch-mode --update-snapshots      
            echo ls -R target/
            echo ls -la 
-           
-    
+
              
    ######################################################## 
       # 4- publish it as artifact
