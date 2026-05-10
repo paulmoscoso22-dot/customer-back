@@ -34,6 +34,7 @@ public class CustomerController {
     // generate all methos for a rest appi with spring boot for a customer entity
     @Autowired
     private CustomerRepository prsRepository;
+    
 
     @Value( "${db.password}" )
      private String DB_PASSWORD;
